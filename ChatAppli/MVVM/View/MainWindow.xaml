@@ -1,0 +1,93 @@
+﻿<Window x:Class="ChatAppli.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Chat Server" Height="450" Width="800">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Connection Status and Client List -->
+        <DockPanel Grid.Column="0">
+            <TextBox x:Name="ConnectionStatus"
+                     Height="25"
+                     DockPanel.Dock="Top"
+                     IsReadOnly="True"
+                     Background="LightGray"
+                     Text="Not Connected"
+                     HorizontalAlignment="Stretch" />
+            <TextBlock Text="Connected Clients:"
+                       Margin="5,5,0,0"
+                       DockPanel.Dock="Top"
+                       FontWeight="Bold" />
+            <ListBox x:Name="ClientList"
+                     DockPanel.Dock="Top"
+                     Height="150"
+                     Margin="5,0,5,0" />
+            <TextBlock x:Name="ClientCount"
+                       Text="Total Clients: 0"
+                       Margin="5,5,0,0"
+                       DockPanel.Dock="Top" />
+            <Button Height="25"
+                    DockPanel.Dock="Top"
+                    Content="Start Server"
+                    Click="btnStartServer_Click" />
+        </DockPanel>
+
+        <!-- Chat History and Message Input -->
+        <StackPanel Grid.Column="1">
+            <!-- Chat History -->
+            <ListView x:Name="ServerChatHistory"
+                      Height="290"
+                      Margin="5">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Message}" 
+                                   TextWrapping="Wrap" 
+                                   Foreground="{Binding Color}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <!-- Message Input with Placeholder Text -->
+            <Grid Margin="5">
+                <TextBox x:Name="ServerMessageInput"
+                         Height="55"
+                         VerticalContentAlignment="Center"
+                         Margin="0,0,80,0"
+                         Foreground="Black"
+                         Text=""
+                         KeyDown="ServerMessageInput_KeyDown"/>
+
+                <TextBlock IsHitTestVisible="False" 
+                           Text="Type a message..."
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Margin="20,0,0,0"
+                           Foreground="Gray">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text, ElementName=ServerMessageInput}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <!-- Send Button -->
+                <Button Content="Send" Click="btnSendMessage_Click" Margin="515,0,0,0"/>
+            </Grid>
+            <ComboBox x:Name="ServerColorPicker" Width="130" Height="30" RenderTransformOrigin="0.504,0.588">
+                <ComboBoxItem Content="Black" IsSelected="True"/>
+                <ComboBoxItem Content="Red"/>
+                <ComboBoxItem Content="Green"/>
+                <ComboBoxItem Content="Blue"/>
+                <ComboBoxItem Content="Yellow"/>
+            </ComboBox>
+        </StackPanel>
+    </Grid>
+</Window>
